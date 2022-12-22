@@ -5,14 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.thymeleaf.util.NumberUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 import web.dao.CarDaoImp;
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;
 
 
 @Controller
-@RequestMapping("/cars")
 public class CarsController {
 
     private final CarDaoImp carDao;
@@ -22,12 +21,11 @@ public class CarsController {
     }
 
 
-    @GetMapping(value = "")
-    public String printCars(HttpServletRequest request, ModelMap model) {
-        String count = request.getParameter("count");
-        if (count != null && Pattern.matches("[0-9]", count)) {
+    @GetMapping(value = "/cars")
+    public String printCars(@RequestParam(required=false) Integer count, ModelMap model) {
+        if (count != null) {
             model.addAttribute("cars", carDao.listCars().stream()
-                    .limit(Integer.parseInt(count)).map(x ->x.toString()).toList());
+                    .limit(count).map(x ->x.toString()).toList());
         } else {
             model.addAttribute("cars", carDao.listCars().stream().map(x -> x.toString()).toList());
         }
