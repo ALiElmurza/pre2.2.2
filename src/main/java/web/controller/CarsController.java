@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.thymeleaf.util.NumberUtils;
 import web.dao.CarDaoImp;
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Pattern;
 
 
 @Controller
@@ -23,7 +25,7 @@ public class CarsController {
     @GetMapping(value = "")
     public String printCars(HttpServletRequest request, ModelMap model) {
         String count = request.getParameter("count");
-        if (count != null) {
+        if (count != null && Pattern.matches("[0-9]", count)) {
             model.addAttribute("cars", carDao.listCars().stream()
                     .limit(Integer.parseInt(count)).map(x ->x.toString()).toList());
         } else {
