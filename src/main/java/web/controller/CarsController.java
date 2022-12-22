@@ -21,7 +21,8 @@ public class CarsController {
     public String printCars(HttpServletRequest request, ModelMap model) {
         String count = request.getParameter("count");
         if (count != null) {
-            model.addAttribute("cars", getDao().listCars().stream().limit(Integer.parseInt(count)).map(x ->x.toString()).toList());
+            model.addAttribute("cars", getDao().listCars().stream()
+                    .limit(Integer.parseInt(count)).map(x ->x.toString()).toList());
         } else {
             model.addAttribute("cars", getDao().listCars().stream().map(x -> x.toString()).toList());
         }
